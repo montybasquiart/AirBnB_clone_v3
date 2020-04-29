@@ -8,7 +8,8 @@ from models import storage
 
 
 @app_views.route('/states', methods=['GET', 'POST'], strict_slashes=False)
-@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'],
+                 strict_slashes=False)
 def states_get(state_id=None):
     """Manipulate State object by state_id, or all objects if
     state_id is None
