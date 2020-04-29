@@ -14,14 +14,14 @@ def amenity_methods(amenity_id=None):
     """Handle requests to API for amentities
     """
     from models.amenity import Amenity
-    amenities = storage.all(Amentiy)
+    amenities = storage.all(Amenity)
 
     # GET REQUESTS
     if request.method == 'GET':
         if not amenity_id:  # if no id specified, return all
             return jsonify([obj.to_dict() for obj in amenities.values()])
 
-        key = 'Amenity.' + amentiy_id
+        key = 'Amenity.' + amenity_id
         try:  # if obj exists in dictionary, convert from obj -> dict -> json
             return jsonify(amenities[key].to_dict())
         except KeyError:
