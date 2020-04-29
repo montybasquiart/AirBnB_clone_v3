@@ -9,7 +9,8 @@ from models.state import State
 from models.city import City
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'])
+@app_views.route('/states/<state_id>/cities', methods=['GET', 'POST'],
+                 strict_slashes=False)
 def city_methods(state_id):
     """Calls method for City object with state_id"""
     cities = storage.all(City)
@@ -44,7 +45,8 @@ def city_methods(state_id):
             abort(400, "Missing name")
 
 
-@app_views.route('/cities/<city_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/cities/<city_id>', methods=['GET', 'DELETE', 'PUT'],
+                 strict_slashes=False)
 def cities_id_mothods(city_id):
     """Retrieves a City object with GET"""
     cities = storage.all(City)
