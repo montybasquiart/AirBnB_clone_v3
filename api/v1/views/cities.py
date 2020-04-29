@@ -20,7 +20,7 @@ def city_methods(state_id):
         state_key = "State." + state_id
         try:
             state = states[state_key]
-            cities_list = [city.to_dict() for city in state.cities] 
+            cities_list = [city.to_dict() for city in state.cities]
             return jsonify(cities_list)
         except KeyError:
             abort(404)
@@ -80,7 +80,7 @@ def cities_id_mothods(city_id):
             abort(400, "Not a JSON")
         for key, value in new.items():
             if key != "id" and key != "state_id" and key != "created_at" and\
-            key != "updated_at":
+               key != "updated_at":
                 setattr(city, key, value)
             storage.save()
             return city.to_dict(), 200
