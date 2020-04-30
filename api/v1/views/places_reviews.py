@@ -10,7 +10,8 @@ from models.review import Review
 from models.user import User
 
 
-@app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'])
+@app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'],
+                 strict_slashes=False)
 def review_methods(place_id):
     """Calls method for Review object with place_id"""
     reviews = storage.all(Review)
@@ -56,7 +57,8 @@ def review_methods(place_id):
         abort(501)
 
 
-@app_views.route('/reviews/<review_id>', methods=['GET', 'DELETE', 'PUT'])
+@app_views.route('/reviews/<review_id>', methods=['GET', 'DELETE', 'PUT'],
+                 strict_slashes=False)
 def reviews_id_mothods(review_id):
     """Review object methods"""
     reviews = storage.all(Review)
