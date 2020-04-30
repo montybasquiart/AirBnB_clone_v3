@@ -99,7 +99,7 @@ def reviews_id_mothods(review_id):
                key != "created_at" and key != "updated_at":
                 setattr(review, key, value)
             storage.save()
-            return city.to_dict(), 200
+            return review.to_dict(), 200
 
     # UNSUPPORTED REQUESTS
     else:
