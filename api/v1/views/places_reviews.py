@@ -7,6 +7,7 @@ from flask import jsonify, abort, request
 from models import storage
 from models.place import Place
 from models.review import Review
+from models.user import User
 
 
 @app_views.route('/places/<place_id>/reviews', methods=['GET', 'POST'])
@@ -36,11 +37,15 @@ def review_methods(place_id):
         elif 'text' not in body_request:
             abort(400, "Missing text")
         else:
+            users = storage.all(User)
+            user_id = body_request['user_id']
+            all_user_ids = [user_ids.id for user_ids in users.values()]
+            if user_id not in all_user_ids:
+                abort(404)
             place_key = "Place." + place_id
             if place_key not in places:
                 abort(404)
             body_request.update({"place_id": place_id})
-# need a check for user_id
             new_review = Review(**body_request)
             storage.new(new_review)
             storage.save()
