@@ -33,7 +33,7 @@ def places_search():
             state = storage.get(State, state_id)
             if state is not None:
                 for city in state.cities:
-                    for place in city.places.values():
+                    for place in city.places:
                         place_list.append(place)
 
     # if cities searched
@@ -41,7 +41,7 @@ def places_search():
         for city_id in body['cities']:
             city = storage.get(City, city_id)
             if city is not None:
-                for place in city.places.values():
+                for place in city.places:
                     place_list.append(place)
 
     # if 'amenities' present
@@ -59,7 +59,7 @@ def places_search():
             place_list.remove(place)
 
     if len(place_list) == 0:
-        place_list = [place.to_dict() for place in storage.all(Place).values()]
+        place_list = [place for place in storage.all(Place).values()]
 
     # convert objs to dict and remove 'amenities' key
     place_list = [place.to_dict() for place in place_list]
