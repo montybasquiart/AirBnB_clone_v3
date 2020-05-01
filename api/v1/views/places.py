@@ -27,33 +27,47 @@ def places_search():
 
     place_list = []
 
-    # if 'amenities' present
-    if 'amenities' in body and len(body['amenities']) > 0:
-        for amenity_id in body['amenities']:
-            amenity = storage.get(Amenity, amenity_id)
-            if amenity is not None:
-                for place in amenity.place_amenities:
-                    place_list.append(place.to_dict())
-        return jsonify(place_list)
-
-    # if states/cities searched
+    # if states searched
     if 'states' in body:
         for state_id in body['states']:
             state = storage.get(State, state_id)
             if state is not None:
                 for city in state.cities:
-                    for place in city.places:
-                        place_list.append(place.to_dict())
+                    for place in city.places.values():
+                        place_list.append(place)
 
+    # if cities searched
     if 'cities' in body:
         for city_id in body['cities']:
             city = storage.get(City, city_id)
             if city is not None:
-                for place in city.places:
-                    place_list.append(place.to_dict())
+                for place in city.places.values():
+                    place_list.append(place)
+
+    # if 'amenities' present
+    if 'amenities' in body and len(body['amenities']) > 0:
+        if len(place_list) == 0:
+            place_list = [place for place in storage.all(Place).values()]
+        del_list = []
+        for place in place_list:
+            for amenity_id in body['amenities']:
+                amenity = storage.get(Amenity, amenity_id)
+                if amenity not in place.amenities:
+                    del_list.append(place)
+                    break
+        for place in del_list:
+            place_list.remove(place)
 
     if len(place_list) == 0:
         place_list = [place.to_dict() for place in storage.all(Place).values()]
+
+    # convert objs to dict and remove 'amenities' key
+    place_list = [place.to_dict() for place in place_list]
+    for place in place_list:
+        try:
+            del place['amenities']
+        except KeyError:
+            pass
 
     return jsonify(place_list)
 
